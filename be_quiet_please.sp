@@ -25,23 +25,23 @@ public void OnPluginStart()
 //When Warden speaks or muted client wants to speak
 public bool OnClientSpeakingEx(client)
 {
-    if (warden_iswarden(client))
-    {
-        for (int i = 1; i <= MaxClients; i++)
-        {
-            if(IsValidClient(i, true))
-            {
-                if (GetClientTeam(i) == CS_TEAM_T && GetUserAdmin(i) == INVALID_ADMIN_ID)
-                {
+	if (warden_iswarden(client))
+	{
+		for (int i = 1; i <= MaxClients; i++)
+		{
+			if(IsValidClient(i, true))
+			{
+				if (GetClientTeam(i) == CS_TEAM_T && GetUserAdmin(i) == INVALID_ADMIN_ID)
+				{
 					MuteClient(i);
 					if (GetConVarInt(h_Type) == 2)
 					{
 						PrintCenterText(i, "Warden speaks, you have been muted.");
 					}
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 	if (GetConVarInt(h_Type) == 1)
 	{
 		if(IsValidClient(i, true))
@@ -58,16 +58,16 @@ public bool OnClientSpeakingEx(client)
 // When client stops ta
 public OnClientSpeakingEnd(client)
 {  
-    for (int i = 1; i <= MaxClients; i++)
-    {
-        if(IsValidClient(i, true))
-        {
-            if (GetClientTeam(i) == CS_TEAM_T && !BaseComm_IsClientMuted(client))
-            {
-                UnmuteClient(i)
-            }
-        }
-    }
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if(IsValidClient(i, true))
+		{
+			if (GetClientTeam(i) == CS_TEAM_T && !BaseComm_IsClientMuted(client))
+			{
+				UnmuteClient(i)
+			}
+		}
+	}
 	if (GetConVarInt(h_Type) == 1)
 	{
 		if (warden_iswarden(client))
@@ -99,10 +99,10 @@ stock bool IsClientMuted(client)
 
 stock bool IsValidClient(client, bool alive = false)
 {
-    if(client >= 1 && client <= MaxClients && IsClientConnected(client) && IsClientInGame(client) && (alive == false || IsPlayerAlive(client)))
-    {
-        return true;
-    }
+	if(client >= 1 && client <= MaxClients && IsClientConnected(client) && IsClientInGame(client) && (alive == false || IsPlayerAlive(client)))
+	{
+		return true;
+	}
 
-    return false;
+	return false;
 }
