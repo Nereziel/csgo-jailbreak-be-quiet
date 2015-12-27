@@ -11,9 +11,9 @@ Handle h_Type = INVALID_HANDLE;
 bool hint = true;
 
 public Plugin:myinfo = {
-	name = "JailBreak - Be quit, please!",
+	name = "JailBreak - Be quiet, please!",
 	author = "Fastmancz",
-	description = "Be quit, please!",
+	description = "Be quiet, please!",
 	url = "cmgportal.cz"
 };
 
