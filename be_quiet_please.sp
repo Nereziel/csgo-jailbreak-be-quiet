@@ -29,28 +29,28 @@ public bool OnClientSpeakingEx(client)
     {
         for (int i = 1; i <= MaxClients; i++)
         {
-            if (IsClientInGame(i))
+            if(IsValidClient(i, true))
             {
-                if (GetClientTeam(i) == CS_TEAM_T)
+                if (GetClientTeam(i) == CS_TEAM_T && GetUserAdmin(i) == INVALID_ADMIN_ID)
                 {
+					MuteClient(i);
 					if (GetConVarInt(h_Type) == 2)
+					{
 						PrintCenterText(i, "Warden speaks, you have been muted.");
-				
-                    SetClientListeningFlags(i, VOICE_MUTED);
-                    if (GetUserAdmin(i) != INVALID_ADMIN_ID)
-                    {
-                        SetClientListeningFlags(i, VOICE_NORMAL);
-                    }
+					}
                 }
             }
         }
     }
 	if (GetConVarInt(h_Type) == 1)
 	{
-		if (hint && GetClientListeningFlags(client) == VOICE_MUTED)
+		if(IsValidClient(i, true))
 		{
-			PrintCenterText(client, "Warden speaks, you have been muted.");
-			hint = false;
+			if (hint && IsClientMuted(client))
+			{
+				PrintCenterText(client, "Warden speaks, you have been muted.");
+				hint = false;
+			}
 		}
 	}
 }
@@ -60,11 +60,11 @@ public OnClientSpeakingEnd(client)
 {  
     for (int i = 1; i <= MaxClients; i++)
     {
-        if(IsClientInGame(i))
+        if(IsValidClient(i, true))
         {
             if (GetClientTeam(i) == CS_TEAM_T && !BaseComm_IsClientMuted(client))
             {
-                SetClientListeningFlags(i, VOICE_NORMAL);
+                UnmuteClient(i)
             }
         }
     }
@@ -75,4 +75,34 @@ public OnClientSpeakingEnd(client)
 			hint = true;
 		}
 	}
+}
+
+stock void MuteClient(client)
+{
+	SetClientListeningFlags(client, VOICE_MUTED);
+}
+
+stock void UnmuteClient(client)
+{
+	SetClientListeningFlags(client, VOICE_NORMAL);
+}
+
+stock bool IsClientMuted(client)
+{
+	if ( GetClientListeningFlags(client) == VOICE_MUTED)
+	{
+		return true;
+	}
+	
+	return false;
+}
+
+stock bool IsValidClient(client, bool alive = false)
+{
+    if(client >= 1 && client <= MaxClients && IsClientConnected(client) && IsClientInGame(client) && (alive == false || IsPlayerAlive(client)))
+    {
+        return true;
+    }
+
+    return false;
 }
